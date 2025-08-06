@@ -9,25 +9,21 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useReactFlow } from "@xyflow/react"
-import { Plus, X } from "lucide-react"
+import { Plus, X, Trash2 } from 'lucide-react' // Import Trash2
 import { useState } from "react"
-import type {
-  EmailPromptNodeData,
-  ResponseNodeData,
-  VoicePromptNodeData,
-  ChatNodeData,
-  CustomNodeData,
-  Rule,
-} from "@/types/canvas"
+import type { EmailPromptNodeData, ResponseNodeData, VoicePromptNodeData, ChatNodeData, Rule } from "@/types/canvas"
 import type { Persona } from "@/types/persona"
 
 interface PropertiesPanelProps {
   selectedNode: Node | null
   nodes: Node[]
   personas: Persona[]
+  onClosePanel: () => void // Add onClosePanel prop
+  onDeleteNode: (nodeId: string) => void // Add onDeleteNode prop
+  style?: React.CSSProperties // Add style prop
 }
 
-export function PropertiesPanel({ selectedNode, nodes, personas }: PropertiesPanelProps) {
+export function PropertiesPanel({ selectedNode, nodes, personas, onClosePanel, onDeleteNode, style }: PropertiesPanelProps) {
   const { setNodes } = useReactFlow()
   const [newKeyword, setNewKeyword] = useState("")
   const [newRule, setNewRule] = useState<Partial<Rule>>({
@@ -93,7 +89,7 @@ export function PropertiesPanel({ selectedNode, nodes, personas }: PropertiesPan
     if (selectedNode) {
       const newNode = {
         id: `fallback-${Date.now()}`,
-        type: "customNode",
+        type: "customNode", // This will be removed in a later step if customNode is fully deprecated
         position: {
           x: selectedNode.position.x + 200,
           y: selectedNode.position.y + 100,
@@ -737,23 +733,6 @@ export function PropertiesPanel({ selectedNode, nodes, personas }: PropertiesPan
     )
   }
 
-  const renderCustomNodeProperties = (data: CustomNodeData) => (
-    <div className="space-y-4">
-      <div>
-        <Label htmlFor="node-label" className="text-xs font-medium text-gray-700">
-          Label
-        </Label>
-        <Input
-          id="node-label"
-          value={data.label || ""}
-          onChange={(e) => updateNodeData(selectedNode.id, { label: e.target.value })}
-          className="mt-1"
-          placeholder="Enter node label"
-        />
-      </div>
-    </div>
-  )
-
   const renderPropertiesByType = () => {
     switch (selectedNode.type) {
       case "emailPromptNode":
@@ -764,33 +743,46 @@ export function PropertiesPanel({ selectedNode, nodes, personas }: PropertiesPan
         return renderChatNodeProperties(selectedNode.data as ChatNodeData)
       case "responseNode":
         return renderResponseProperties(selectedNode.data as ResponseNodeData)
-      case "customNode":
-        return renderCustomNodeProperties(selectedNode.data as CustomNodeData)
       default:
         return <div className="text-sm text-gray-500">Unknown node type</div>
     }
   }
 
   return (
-    <div className="w-64 bg-white border border-gray-200 rounded-lg p-4 max-h-full overflow-y-auto">
-      <h3 className="text-sm font-semibold text-gray-900 mb-4">Properties</h3>
+    <div className="bg-white border-b border-gray-200 p-0 max-h-full overflow-y-auto" style={style}>
+      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex flex-col">
+          <h3 className="text-base font-semibold text-gray-900">{selectedNode.data?.label || "Node Properties"}</h3>
+          <p className="text-xs text-gray-500">{selectedNode.type}</p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="ghost" size="icon" onClick={() => onDeleteNode(selectedNode.id)} aria-label="Delete node">
+            <Trash2 className="w-4 h-4 text-gray-600 hover:text-red-500" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={onClosePanel} aria-label="Close panel">
+            <X className="w-4 h-4 text-gray-600 hover:text-gray-900" />
+          </Button>
+        </div>
+      </div>
 
-      {renderPropertiesByType()}
+      <div className="p-2">
+        {renderPropertiesByType()}
 
-      <div className="mt-6 pt-4 border-t border-gray-200">
-        <div className="space-y-2">
-          <div>
-            <Label className="text-xs font-medium text-gray-700">Node ID</Label>
-            <div className="mt-1 text-xs text-gray-500 font-mono">{selectedNode.id}</div>
-          </div>
-          <div>
-            <Label className="text-xs font-medium text-gray-700">Type</Label>
-            <div className="mt-1 text-xs text-gray-500">{selectedNode.type}</div>
-          </div>
-          <div>
-            <Label className="text-xs font-medium text-gray-700">Position</Label>
-            <div className="mt-1 text-xs text-gray-500">
-              X: {Math.round(selectedNode.position.x)}, Y: {Math.round(selectedNode.position.y)}
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="space-y-2">
+            <div>
+              <Label className="text-xs font-medium text-gray-700">Node ID</Label>
+              <div className="mt-1 text-xs text-gray-500 font-mono">{selectedNode.id}</div>
+            </div>
+            <div>
+              <Label className="text-xs font-medium text-gray-700">Type</Label>
+              <div className="mt-1 text-xs text-gray-500">{selectedNode.type}</div>
+            </div>
+            <div>
+              <Label className="text-xs font-medium text-gray-700">Position</Label>
+              <div className="mt-1 text-xs text-gray-500">
+                X: {Math.round(selectedNode.position.x)}, Y: {Math.round(selectedNode.position.y)}
+              </div>
             </div>
           </div>
         </div>

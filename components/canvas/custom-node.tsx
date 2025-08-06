@@ -1,18 +1,19 @@
 "use client"
 
-import { Handle, Position, type NodeProps } from "@xyflow/react"
+import { Handle, Position, type NodeProps, type Node } from "@xyflow/react"
 import { useState } from "react"
 import { AlertTriangle } from "lucide-react"
 
-interface CustomNodeData {
+export interface CustomNodeData {
   label: string
 }
 
-interface CustomNodeProps extends NodeProps<CustomNodeData> {
+interface CustomNodeProps extends NodeProps {
   isOrphaned?: boolean
 }
 
 export function CustomNode({ data, selected, isOrphaned }: CustomNodeProps) {
+  const nodeData = data as unknown as CustomNodeData
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -24,20 +25,26 @@ export function CustomNode({ data, selected, isOrphaned }: CustomNodeProps) {
       onMouseLeave={() => setIsHovered(false)}
       role="button"
       tabIndex={0}
-      aria-label={`Custom node: ${data.label || "Node"}`}
-      aria-selected={selected}
+      aria-label={`Custom node: ${nodeData.label || "Node"}`}
+      aria-selected={selected ? true : false}
     >
-      <Handle type="target" position={Position.Top} className="w-16 !bg-teal-500" aria-label="Input connection point" />
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        // className="h-5 w-5 !bg-blue-500 z-10" 
+        style={{ background: '#fff' }}
+        aria-label="Input connection point" 
+      />
       <div className="flex items-center gap-2">
-        <div className="text-sm font-medium text-gray-900">{data.label || "Node"}</div>
+        <div className="text-sm font-medium text-gray-900">{nodeData.label || "Node"}</div>
         {isOrphaned && (
-          <AlertTriangle className="w-3 h-3 text-orange-500" title="Orphaned node - not connected to workflow" />
+          <AlertTriangle className="w-3 h-3 text-orange-500" aria-label="Orphaned node - not connected to workflow" />
         )}
       </div>
       <Handle
         type="source"
-        position={Position.Bottom}
-        className="w-16 !bg-teal-500"
+        position={Position.Right}
+        className="h-5 w-5 !bg-green-500 z-10"
         aria-label="Output connection point"
       />
     </div>

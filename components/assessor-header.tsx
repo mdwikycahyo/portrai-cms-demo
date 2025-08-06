@@ -53,11 +53,11 @@ export function AssessorHeader({
     onBackToDashboard !== undefined
 
   return (
-    <div className="px-6 py-4 flex justify-between items-center">
+    <div className={`px-6 py-4 flex justify-between items-center ${isCanvasPage ? 'border-b border-gray-200' : ''}`}>
       <div className="flex items-center gap-4">
-        {isCanvasPage ? (
+        {isCanvasPage && (
           <>
-            <Button variant="ghost" size="sm" onClick={onBackToDashboard} className="text-gray-600 hover:text-gray-900">
+            <Button variant="ghost" size="sm" onClick={onBackToDashboard} className="text-gray-600 hover:text-black hover:bg-gray-200 cursor-pointer">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Button>
@@ -69,8 +69,7 @@ export function AssessorHeader({
               placeholder="Simulation Name"
             />
           </>
-        ) : // This part is now explicitly null as PersonaManagerModal has moved
-        null}
+        )}
       </div>
       <div className="flex items-center gap-2">
         {isCanvasPage ? (
@@ -83,11 +82,11 @@ export function AssessorHeader({
               <Redo className="w-4 h-4 mr-2" />
               Redo
             </Button>
-            <Button variant="ghost" size="sm" onClick={onLoad}>
+            <Button variant="ghost" disabled size="sm" onClick={onLoad}>
               <Upload className="w-4 h-4 mr-2" />
               Load
             </Button>
-            <Button size="sm" onClick={onSave}>
+            <Button size="sm" disabled onClick={onSave}>
               <Save className="w-4 h-4 mr-2" />
               Save
             </Button>

@@ -6,9 +6,9 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "HR Simulation Builder",
+  title: "Portrai CMS Demo",
   description: "Build and manage HR assessment simulations",
-    generator: 'v0.dev'
+  generator: 'FoW'
 }
 
 export default function RootLayout({

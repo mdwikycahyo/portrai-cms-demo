@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { Home } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const navigation = [{ name: "Dashboard", href: "/dashboard", icon: Home }]
+const navigation = [{ name: "Dashboard", href: "/", icon: Home }]
 
 export function AssessorSidebar() {
   const pathname = usePathname()

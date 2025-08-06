@@ -1,6 +1,6 @@
 "use client"
 
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from "@xyflow/react"
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps, MarkerType } from "@xyflow/react"
 
 interface ConditionalEdgeProps extends EdgeProps {
   data?: {
@@ -32,12 +32,12 @@ export function ConditionalEdge({
     <>
       <BaseEdge
         path={edgePath}
-        markerEnd={markerEnd}
+        markerEnd={markerEnd || MarkerType.ArrowClosed}
         style={{
           ...style,
           strokeDasharray: "3,3",
-          stroke: "#3b82f6",
-          strokeWidth: 2,
+          stroke: "#1d4ed8", // Darker blue
+          strokeWidth: 3, // Thicker
         }}
       />
       {data?.condition && (

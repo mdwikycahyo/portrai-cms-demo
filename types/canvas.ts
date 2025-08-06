@@ -45,8 +45,4 @@ export interface ChatNodeData {
   personaId?: string
 }
 
-export interface CustomNodeData {
-  label: string
-}
-
-export type NodeData = EmailPromptNodeData | ResponseNodeData | VoicePromptNodeData | ChatNodeData | CustomNodeData
+export type NodeData = EmailPromptNodeData | ResponseNodeData | VoicePromptNodeData | ChatNodeData

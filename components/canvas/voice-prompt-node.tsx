@@ -1,17 +1,18 @@
 "use client"
 
-import { Handle, Position, type NodeProps } from "@xyflow/react"
+import { Handle, Position, type NodeProps, type Node } from "@xyflow/react"
 import { useState } from "react"
 import { Phone, Clock, User, AlertTriangle } from "lucide-react" // Changed Mic to Phone and added AlertTriangle
 import type { VoicePromptNodeData } from "@/types/canvas"
 
-interface VoicePromptNodeProps extends NodeProps<VoicePromptNodeData> {
+interface VoicePromptNodeProps extends NodeProps {
   isOrphaned?: boolean
 }
 
 export function VoicePromptNode({ data, selected, isOrphaned }: VoicePromptNodeProps) {
+  const nodeData = data as unknown as VoicePromptNodeData
   const [isHovered, setIsHovered] = useState(false)
-  const hasValidationErrors = !data.script || data.script.trim() === ""
+  const hasValidationErrors = !nodeData.script || nodeData.script.trim() === ""
 
   return (
     <div
@@ -22,42 +23,42 @@ export function VoicePromptNode({ data, selected, isOrphaned }: VoicePromptNodeP
       onMouseLeave={() => setIsHovered(false)}
       role="button"
       tabIndex={0}
-      aria-label={`Voice call node: ${data.label || "Voice Call"}`}
-      aria-selected={selected}
+      aria-label={`Voice call node: ${nodeData.label || "Voice Call"}`}
+      aria-selected={selected ? true : false}
       aria-invalid={hasValidationErrors}
     >
       <Handle
         type="target"
-        position={Position.Top}
-        className="w-16 !bg-purple-500"
+        position={Position.Left}
+        className="h-5 w-5 !bg-blue-500 z-10"
         aria-label="Input connection point"
       />
       <div className="flex items-center gap-2 mb-2">
         <Phone className="w-4 h-4 text-purple-600" />
         <div className="text-sm font-semibold text-purple-900">Voice Call</div>
         {isOrphaned && (
-          <AlertTriangle className="w-3 h-3 text-orange-500" title="Orphaned node - not connected to workflow" />
+          <AlertTriangle className="w-3 h-3 text-orange-500" aria-label="Orphaned node - not connected to workflow" />
         )}
         {hasValidationErrors && (
-          <AlertTriangle className="w-3 h-3 text-red-500" title="Validation errors - check properties" />
+          <AlertTriangle className="w-3 h-3 text-red-500" aria-label="Validation errors - check properties" />
         )}
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-1 text-xs text-purple-700">
           <User className="w-3 h-3" />
-          <span>{data.voiceProfile || "Default voice"}</span>
+          <span>{nodeData.voiceProfile || "Default voice"}</span>
         </div>
-        {data.callDuration && (
+        {nodeData.callDuration && (
           <div className="flex items-center gap-1 text-xs text-purple-700">
             <Clock className="w-3 h-3" />
-            <span>{data.callDuration}s duration</span>
+            <span>{nodeData.callDuration}s duration</span>
           </div>
         )}
       </div>
       <Handle
         type="source"
-        position={Position.Bottom}
-        className="w-16 !bg-purple-500"
+        position={Position.Right}
+        className="h-5 w-5 !bg-green-500 z-10"
         aria-label="Output connection point"
       />
     </div>

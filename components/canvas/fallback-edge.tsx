@@ -1,6 +1,6 @@
 "use client"
 
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from "@xyflow/react"
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps, MarkerType } from "@xyflow/react"
 
 export function FallbackEdge({
   sourceX,
@@ -25,12 +25,12 @@ export function FallbackEdge({
     <>
       <BaseEdge
         path={edgePath}
-        markerEnd={markerEnd}
+        markerEnd={markerEnd || MarkerType.ArrowClosed}
         style={{
           ...style,
           strokeDasharray: "5,5",
-          stroke: "#ef4444",
-          strokeWidth: 2,
+          stroke: "#b91c1c", // Darker red
+          strokeWidth: 3, // Thicker
         }}
       />
       <EdgeLabelRenderer>
