@@ -1,52 +1,105 @@
-import { useState, useCallback } from "react"
+import { useCallback, useState } from "react"
+import type { NodeData } from "@/types/canvas"
 
-export const useValidation = () => {
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+interface ValidationErrors {
+  [field: string]: string | undefined
+}
+
+export function useValidation() {
+  const [errors, setErrors] = useState<ValidationErrors>({})
 
   const validateField = useCallback((field: string, value: any, nodeType: string) => {
-    setValidationErrors(errors => {
-      const newErrors = { ...errors }
+    let error: string | undefined
 
-      switch (nodeType) {
-        case "emailPromptNode":
-          if (field === "sender" && (!value || !value.includes("@"))) {
-            newErrors[field] = "Valid email address required"
-          } else if (field === "subject" && (!value || value.trim() === "")) {
-            newErrors[field] = "Subject is required"
-          } else if (field === "body" && (!value || value.trim() === "")) {
-            newErrors[field] = "Email body is required"
-          } else {
-            delete newErrors[field]
+    switch (nodeType) {
+      case "emailPrompt":
+        if (field === "senderId") {
+          if (!value || value.trim() === "") {
+            error = "Please select a sender"
           }
-          break
-        case "voicePromptNode":
-          if (field === "script" && (!value || value.trim() === "")) {
-            newErrors[field] = "Script is required"
-          } else {
-            delete newErrors[field]
+        } else if (field === "subject") {
+          if (!value || value.trim() === "") {
+            error = "Subject is required"
+          } else if (value.length > 200) {
+            error = "Subject must be 200 characters or less"
           }
-          break
-        case "responseNode":
-          if (field === "timeLimit" && (!value || value <= 0)) {
-            newErrors[field] = "Time limit must be greater than 0"
-          } else {
-            delete newErrors[field]
+        } else if (field === "body") {
+          if (!value || value.trim() === "") {
+            error = "Email body is required"
+          } else if (value.length > 5000) {
+            error = "Email body must be 5000 characters or less"
           }
-          break
-        case "chatNode":
-          if (field === "personaId" && !value) {
-            newErrors[field] = "Persona selection is required"
-          } else {
-            delete newErrors[field]
-          }
-          break
-      }
+        }
+        break
 
-      return newErrors
-    })
+      case "voicePrompt":
+        if (field === "script") {
+          if (!value || value.trim() === "") {
+            error = "Script is required"
+          } else if (value.length > 2000) {
+            error = "Script must be 2000 characters or less"
+          }
+        } else if (field === "voiceProfile") {
+          if (!value || value.trim() === "") {
+            error = "Voice profile is required"
+          }
+        }
+        break
+
+      case "response":
+        if (field === "timeLimit") {
+          const numValue = Number(value)
+          if (isNaN(numValue) || numValue <= 0) {
+            error = "Time limit must be a positive number"
+          } else if (numValue > 3600) {
+            error = "Time limit cannot exceed 3600 seconds"
+          }
+        } else if (field === "minLength") {
+          const numValue = Number(value)
+          if (value !== "" && (isNaN(numValue) || numValue < 0)) {
+            error = "Minimum length must be a non-negative number"
+          }
+        } else if (field === "maxLength") {
+          const numValue = Number(value)
+          if (value !== "" && (isNaN(numValue) || numValue < 0)) {
+            error = "Maximum length must be a non-negative number"
+          }
+        }
+        break
+
+      case "chat":
+        // Chat nodes currently don't have required validation
+        break
+
+      default:
+        break
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [field]: error
+    }))
+
+    return !error
   }, [])
 
-  const getFieldError = useCallback((field: string) => validationErrors[field], [validationErrors])
+  const getFieldError = useCallback((field: string) => {
+    return errors[field]
+  }, [errors])
 
-  return { validationErrors, validateField, getFieldError }
+  const clearErrors = useCallback(() => {
+    setErrors({})
+  }, [])
+
+  const hasErrors = useCallback(() => {
+    return Object.values(errors).some(error => error !== undefined)
+  }, [errors])
+
+  return {
+    validateField,
+    getFieldError,
+    clearErrors,
+    hasErrors,
+    errors
+  }
 }

@@ -6,9 +6,12 @@ import { useReactFlow } from "@xyflow/react"
 import { Mail, UserRoundCog, Phone, MessageCircle, GripVertical } from 'lucide-react'
 import { useDnD } from "@/components/canvas/dnd-context"
 
-type CanvasSidebarProps = {}
+type CanvasSidebarProps = {
+  personas: any[]
+  setPersonas: (personas: any[]) => void
+}
 
-export function CanvasSidebar({}: CanvasSidebarProps) {
+export function CanvasSidebar({ personas, setPersonas }: CanvasSidebarProps) {
   const { setNodes } = useReactFlow()
   const [, setDndType] = useDnD()
   // Removed activeCategory state

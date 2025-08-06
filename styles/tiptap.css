@@ -1,0 +1,111 @@
+/* TipTap Editor Styles */
+
+.tiptap-editor-wrapper {
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.tiptap-editor-wrapper .ProseMirror {
+  outline: none;
+  min-height: 200px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.tiptap-editor-wrapper .ProseMirror p {
+  margin: 0.5em 0;
+}
+
+.tiptap-editor-wrapper .ProseMirror h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+}
+
+.tiptap-editor-wrapper .ProseMirror h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+}
+
+.tiptap-editor-wrapper .ProseMirror h3 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+}
+
+.tiptap-editor-wrapper .ProseMirror ul,
+.tiptap-editor-wrapper .ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.tiptap-editor-wrapper .ProseMirror li {
+  margin: 0.2em 0;
+}
+
+.tiptap-editor-wrapper .ProseMirror blockquote {
+  border-left: 3px solid #ddd;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1em;
+  color: #666;
+}
+
+.tiptap-editor-wrapper .ProseMirror code {
+  background-color: #f3f3f3;
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+  font-family: monospace;
+}
+
+.tiptap-editor-wrapper .ProseMirror pre {
+  background-color: #f3f3f3;
+  border-radius: 3px;
+  padding: 0.5em;
+  font-family: monospace;
+  margin: 0.5em 0;
+}
+
+.tiptap-editor-wrapper .ProseMirror a {
+  color: #0074d9;
+  text-decoration: underline;
+}
+
+.tiptap-editor-wrapper .ProseMirror strong {
+  font-weight: bold;
+}
+
+.tiptap-editor-wrapper .ProseMirror em {
+  font-style: italic;
+}
+
+/* Placeholder text */
+.tiptap-editor-wrapper .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Toolbar styles */
+.tiptap-editor-wrapper .flex.flex-wrap {
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tiptap-editor-wrapper button {
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  margin: 0.125rem;
+}
+
+.tiptap-editor-wrapper button:hover {
+  background-color: #e2e8f0;
+}
+
+.tiptap-editor-wrapper button.bg-gray-200 {
+  background-color: #e2e8f0;
+}

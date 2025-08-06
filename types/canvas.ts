@@ -9,7 +9,7 @@ export interface Rule {
 
 export interface EmailPromptNodeData {
   label: string
-  sender: string
+  senderId: string
   subject: string
   body: string
 }

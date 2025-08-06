@@ -2,17 +2,22 @@
 
 import { Handle, Position, type NodeProps } from "@xyflow/react"
 import { useState } from "react"
-import { Mail, AlertTriangle } from "lucide-react"
+import { Mail } from 'lucide-react'
+import { getSenderById } from "@/data/mock-senders"
 import type { EmailPromptNodeData } from "@/types/canvas"
 
 interface EmailPromptNodeProps extends NodeProps {
   isOrphaned?: boolean
-  isConnected?: boolean // Add this line
+  isConnected?: boolean
 }
 
 export function EmailPromptNode({ data, selected, isOrphaned, isConnected }: EmailPromptNodeProps) {
   const nodeData = data as unknown as EmailPromptNodeData
   const [isHovered, setIsHovered] = useState(false)
+  
+  // Get sender information
+  const sender = getSenderById(nodeData.senderId || "")
+  const senderDisplay = sender ? `${sender.name} (${sender.roleName})` : "No sender selected"
 
   return (
     <div
@@ -37,20 +42,27 @@ export function EmailPromptNode({ data, selected, isOrphaned, isConnected }: Ema
         style={{
           top: "50%",
           transform: "translateY(-50%)",
-          left: "-10px", // Adjusted to center 16px handle on the node's left edge
+          left: "-10px",
           background: "radial-gradient(circle, transparent 30%, #60a5fa 30%)",
         }}
         aria-label="Input connection point"
       />
+      
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 rounded-md flex items-center justify-center flex-shrink-0 bg-blue-100">
           <Mail className="w-8 h-8 text-blue-600" />
         </div>
-        <div className="flex flex-col min-w-0">
-          <div className="text-sm font-medium text-gray-700">Email</div>
-          <div className="text-base font-semibold text-gray-900 truncate">{nodeData.subject || "No Detail"}</div>
+        <div className="flex flex-col min-w-0 flex-1">
+          <div className="text-base font-semibold text-gray-900 truncate">Email</div>
+          <div className="text-xs text-gray-600 truncate">
+            <span className="font-medium text-gray-900">From:</span> {senderDisplay}
+          </div>
+          <div className="text-xs text-gray-600 truncate">
+            <span className="font-medium text-gray-900">Subject:</span> {nodeData.subject || "No subject"}
+          </div>
         </div>
       </div>
+      
       <Handle
         type="source"
         position={Position.Right}
@@ -58,7 +70,7 @@ export function EmailPromptNode({ data, selected, isOrphaned, isConnected }: Ema
         style={{
           top: "50%",
           transform: "translateY(-50%)",
-          right: "-10px", // Adjusted to center 16px handle on the node's right edge
+          right: "-10px",
           background: "radial-gradient(circle, transparent 30%, #fb923c 30%)",
         }}
         aria-label="Output connection point"
