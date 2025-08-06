@@ -3,7 +3,7 @@
 import type React from "react"
 import { useCallback } from "react"
 import { useReactFlow } from "@xyflow/react"
-import { Mail, UserRoundCog, Phone, MessageCircle, GripVertical } from "lucide-react"
+import { Mail, UserRoundCog, Phone, MessageCircle, GripVertical } from 'lucide-react'
 import { useDnD } from "@/components/canvas/dnd-context"
 
 type CanvasSidebarProps = {}
@@ -138,6 +138,10 @@ export function CanvasSidebar({}: CanvasSidebarProps) {
 
   return (
     <div className="w-64 bg-white border-b border-gray-200 border-r border-gray-200 rounded-br-lg p-0 max-h-[calc(100vh-70px)] overflow-y-auto flex flex-col">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-gray-200">
+        <h3 className="text-base font-semibold text-gray-900">COMPONENTS</h3>
+      </div>
       {/* Single Column: Categories and Nodes */}
       {categories.map((category) => (
         <div key={category} className="mb-2">
@@ -150,7 +154,7 @@ export function CanvasSidebar({}: CanvasSidebarProps) {
               return (
                 <div
                   key={nodeType.type}
-                  className={`p-2 border rounded-md cursor-grab transition-colors flex items-center bg-white border-gray-200 hover:border-blue-500`}
+                  className={`p-2 border rounded-md cursor-grab transition-colors flex items-center ${nodeType.type === "emailPromptNode" ? "bg-white" : "bg-gray-100"} border-gray-200 hover:border-blue-500`}
                   draggable="true"
                   onDragStart={(event) => onDragStart(event, nodeType.type)}
                   onClick={() => addNode(nodeType.type)}
