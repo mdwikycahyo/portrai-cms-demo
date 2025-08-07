@@ -109,8 +109,8 @@ export function PropertiesPanel({
   }
 
   return (
-    <div className="bg-white border-b border-gray-200 p-0 max-h-full overflow-y-auto" style={style}>
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+    <div className="bg-white border-b border-gray-200 p-0 flex flex-col h-full" style={style}>
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-none">
         <div className="flex flex-col">
           <h3 className="text-base font-semibold text-gray-900">
             {(() => {
@@ -130,7 +130,7 @@ export function PropertiesPanel({
         </div>
       </div>
 
-      <div className="p-2">
+      <div className="flex-1 overflow-y-auto min-h-0">
         {renderPropertiesByType()}
       </div>
     </div>

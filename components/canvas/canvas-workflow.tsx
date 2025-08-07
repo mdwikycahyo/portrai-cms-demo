@@ -116,7 +116,7 @@ export function CanvasWorkflow({
 
   return (
     <div className="flex gap-0 h-[calc(100vh-70px)]">
-      <CanvasSidebar personas={personas} onPersonasChange={savePersonas} />
+      <CanvasSidebar personas={personas} setPersonas={savePersonas} />
       <div className="flex-1 overflow-hidden" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes.map((node) => ({
@@ -138,7 +138,7 @@ export function CanvasWorkflow({
           isValidConnection={isValidConnection}
           className="bg-gray-50"
           onDragOver={onDragOver}
-          onDrop={(event) => onDrop(event, reactFlowWrapper)}
+          onDrop={(event) => onDrop(event, reactFlowWrapper as React.RefObject<HTMLDivElement>)}
           deleteKeyCode={["Backspace", "Delete"]}
           defaultEdgeOptions={{
             markerEnd: MarkerType.ArrowClosed,
@@ -155,7 +155,7 @@ export function CanvasWorkflow({
       {selectedNode && (
         <>
           <div
-            className="w-1 bg-gray-200 cursor-ew-resize hover:bg-gray-500 transition-colors duration-100"
+            className="w-1 bg-gray-200 cursor-ew-resize hover:bg-gray-500 transition-colors duration-100 h-full"
             onMouseDown={handleMouseDown}
             aria-label="Resize properties panel"
           />
@@ -184,7 +184,7 @@ export function CanvasWorkflow({
                 )
               )
             }}
-            style={{ width: propertiesPanelWidth }}
+            style={{ width: propertiesPanelWidth, height: '100%' }}
           />
         </>
       )}

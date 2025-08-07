@@ -35,7 +35,6 @@ export function ChatProperties({
             onUpdateNodeData(nodeId, { personaId: value === "none" ? undefined : value })
             validateField("personaId", value === "none" ? undefined : value, nodeType)
           }}
-          onBlur={() => validateField("personaId", data.personaId || "none", nodeType)}
         >
           <SelectTrigger className={`mt-1 ${getFieldError("personaId") ? "border-red-500" : ""}`}>
             <SelectValue placeholder="Select persona" />
@@ -44,7 +43,7 @@ export function ChatProperties({
             <SelectItem value="none">No persona assigned</SelectItem>
             {personas.map((persona) => (
               <SelectItem key={persona.id} value={persona.id}>
-                {persona.name} ({persona.type})
+                {String(`${persona.name} (${persona.type})`)}
               </SelectItem>
             ))}
           </SelectContent>

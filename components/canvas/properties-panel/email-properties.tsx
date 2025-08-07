@@ -137,7 +137,8 @@ export function EmailProperties({
   CustomSelectValue.displayName = "CustomSelectValue"
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full">
+      <div className="space-y-4 p-2 flex-none">
       <div>
         <Label htmlFor="email-sender" className="text-xs font-medium text-gray-700">
           Sender
@@ -158,9 +159,9 @@ export function EmailProperties({
             {mockSenders.map((sender) => (
               <SelectItem key={sender.id} value={sender.id}>
                 <div className="flex flex-col">
-                  <span className="font-medium">{sender.name}</span>
-                  <span className="text-xs text-gray-500">{sender.roleName}</span>
-                  <span className="text-xs text-gray-400">{sender.email}</span>
+                  <span className="font-medium">{String(sender.name)}</span>
+                  <span className="text-xs text-gray-500">{String(sender.roleName)}</span>
+                  <span className="text-xs text-gray-400">{String(sender.email)}</span>
                 </div>
               </SelectItem>
             ))}
@@ -206,40 +207,43 @@ export function EmailProperties({
           </div>
         )}
       </div>
-      <div>
-        <Label htmlFor="email-body" className="text-xs font-medium text-gray-700">
+      </div>
+      <div className="flex-1 flex flex-col p-2 min-h-0">
+        <Label htmlFor="email-body" className="text-xs font-medium text-gray-700 mb-1">
           Body
         </Label>
-        <TiptapEditor
-          id="email-body"
-          value={bodyValue} // Use local state for immediate feedback
-          onChange={handleBodyChange} // Use debounced handler
-          onBlur={() => {
-            // On blur, clear any pending debounce timer
-            if (bodyDebounceTimerRef.current) {
-              clearTimeout(bodyDebounceTimerRef.current)
-              bodyDebounceTimerRef.current = null
-            }
-            
-            // Only update if the value has changed from the current data
-            if (data.body !== bodyValue) {
-              onUpdateNodeData(nodeId, { body: bodyValue })
-            }
-            
-            // Always validate on blur
-            validateField("body", bodyValue, nodeType)
-          }}
-          className={`mt-1 ${getFieldError("body") ? "border-red-500" : ""}`}
-          placeholder="Email content..."
-          minHeight="200px"
-          aria-invalid={!!getFieldError("body")}
-          aria-describedby={getFieldError("body") ? "body-error" : undefined}
-        />
-        {getFieldError("body") && (
-          <div id="body-error" className="text-xs text-red-600 mt-1" role="alert">
-            {getFieldError("body")}
-          </div>
-        )}
+        <div className="flex-1 flex flex-col min-h-0">
+          <TiptapEditor
+            value={bodyValue} // Use local state for immediate feedback
+            onChange={handleBodyChange} // Use debounced handler
+            onBlur={() => {
+              // On blur, clear any pending debounce timer
+              if (bodyDebounceTimerRef.current) {
+                clearTimeout(bodyDebounceTimerRef.current)
+                bodyDebounceTimerRef.current = null
+              }
+              
+              // Only update if the value has changed from the current data
+              if (data.body !== bodyValue) {
+                onUpdateNodeData(nodeId, { body: bodyValue })
+              }
+              
+              // Always validate on blur
+              validateField("body", bodyValue, nodeType)
+            }}
+            className={`${getFieldError("body") ? "border-red-500" : ""}`}
+            placeholder="Email content..."
+            minHeight="100%"
+            resizable={true}
+            aria-invalid={!!getFieldError("body")}
+            aria-describedby={getFieldError("body") ? "body-error" : undefined}
+          />
+          {getFieldError("body") && (
+            <div id="body-error" className="text-xs text-red-600 mt-1" role="alert">
+              {getFieldError("body")}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

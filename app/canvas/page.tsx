@@ -8,7 +8,6 @@ import { CanvasInitializer } from "@/components/canvas/canvas-initializer"
 import { useCanvasHistory } from "@/store/canvas-history"
 import type { Persona } from "@/types/persona"
 import { DnDProvider } from "@/components/canvas/dnd-context"
-import { CanvasSidebar } from "@/components/canvas/canvas-sidebar"
 
 export default function CanvasPage() {
   const [simulationName, setSimulationName] = useState("Untitled Simulation")
@@ -88,9 +87,7 @@ export default function CanvasPage() {
                   // This is a placeholder. Actual save logic is inside CanvasWorkflow's useEffect.
                   // If a manual trigger is needed, we'd add a state to CanvasWorkflow.
                 }}
-              >
-                <CanvasSidebar />
-              </CanvasWorkflow>
+              />
             </ReactFlowProvider>
           </DnDProvider>
         </div>
