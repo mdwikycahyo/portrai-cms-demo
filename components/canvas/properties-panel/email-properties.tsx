@@ -68,7 +68,7 @@ export function EmailProperties({
       if (data.subject !== newValue) {
         onUpdateNodeData(nodeId, { subject: newValue })
       }
-    }, 800) // Increased to 800ms to reduce interference with typing
+    }, 1500) // Increased to 1500ms to reduce interference with typing
   }
   
   // Optimized body change handler with controlled input for rich text editor
@@ -87,7 +87,7 @@ export function EmailProperties({
       if (data.body !== newValue) {
         onUpdateNodeData(nodeId, { body: newValue })
       }
-    }, 800) // 800ms debounce delay
+    }, 1500) // Increased to 1500ms to reduce interference with typing
   }
   
   // Clean up timers on unmount

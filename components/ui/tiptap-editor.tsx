@@ -99,9 +99,13 @@ export function TiptapEditor({
   const editor = useEditor({
     extensions: [StarterKit],
     content: value,
-    immediatelyRender: false,
+    immediatelyRender: true,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      // Only call onChange when the content actually changes
+      const newContent = editor.getHTML();
+      if (newContent !== value) {
+        onChange(newContent);
+      }
     },
     onBlur: ({ editor }) => {
       onBlur && onBlur(editor.getHTML());
@@ -115,7 +119,9 @@ export function TiptapEditor({
   });
 
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
+    // Only update content from props if the editor isn't currently focused
+    // This prevents content jumps while typing
+    if (editor && value !== editor.getHTML() && !editor.isFocused) {
       editor.commands.setContent(value);
     }
   }, [editor, value]);
