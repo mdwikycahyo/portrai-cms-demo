@@ -247,7 +247,7 @@ export function ResponseProperties({
                     <SelectItem value="none">No connection</SelectItem>
                     {availableNodes.map((node) => (
                       <SelectItem key={node.id} value={node.id}>
-                        {node.data?.label || node.id}
+                        {String(node.data?.label || node.id)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -287,7 +287,7 @@ export function ResponseProperties({
                 <SelectItem value="none">No connection</SelectItem>
                 {availableNodes.map((node) => (
                   <SelectItem key={node.id} value={node.id}>
-                    {node.data?.label || node.id}
+                    {String(node.data?.label || node.id)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -320,7 +320,7 @@ export function ResponseProperties({
                     <X className="w-3 h-3" />
                   </Button>
                 </div>
-                <div className="text-xs text-blue-700">→ {targetNode?.data?.label || "Unknown Node"}</div>
+                <div className="text-xs text-blue-700">→ {String(targetNode?.data?.label || "Unknown Node")}</div>
               </div>
             )
           })}
@@ -396,7 +396,7 @@ export function ResponseProperties({
             <SelectContent>
               {availableNodes.map((node) => (
                 <SelectItem key={node.id} value={node.id}>
-                  {node.data?.label || node.id}
+                  {String(node.data?.label || node.id)}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -84,6 +84,7 @@ interface TiptapEditorProps {
   placeholder?: string;
   className?: string;
   minHeight?: string;
+  resizable?: boolean;
 }
 
 export function TiptapEditor({
@@ -93,6 +94,7 @@ export function TiptapEditor({
   placeholder = "Start typing...",
   className,
   minHeight = "200px",
+  resizable = false,
 }: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
@@ -119,9 +121,9 @@ export function TiptapEditor({
   }, [editor, value]);
 
   return (
-    <div className="tiptap-editor-wrapper">
+    <div className={`tiptap-editor-wrapper ${resizable ? 'resizable' : ''}`}>
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className="editor-content" />
     </div>
   );
 }
